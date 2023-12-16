@@ -10,7 +10,7 @@ interface ButtonWrapperProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 // Styled component for the button
 const ButtonWrapper = styled.button<ButtonWrapperProps>`
   display: flex;
-  padding: 0rem 0.75rem;
+  padding: 0.5rem 0.75rem;
   justify-content: center;
   align-items: center;
   gap: 0.625rem;
@@ -21,6 +21,7 @@ const ButtonWrapper = styled.button<ButtonWrapperProps>`
   cursor: pointer;
 
   // Text Css
+  white-space: nowrap;
   font-family: Saira;
   font-size: 1rem;
   font-style: normal;

@@ -5,6 +5,7 @@ const HeaderWrapper = styled.div`
   background-color: ${theme.gray};
   position: sticky;
   top: 0;
+  z-index: 1;
 `;
 
 const SearchInput = styled.input`
@@ -15,5 +16,6 @@ const SearchInput = styled.input`
   outline: none;
   background-color: ${theme.lightGray};
   margin-bottom: 1.5rem;
+  color: ${theme.whiteRedBg};
 `;
 export { HeaderWrapper, SearchInput };

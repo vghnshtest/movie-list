@@ -11,9 +11,11 @@ function App() {
   const [searchText, setSearchText] = useState("");
 
   const handleGenre = (genreData: any) => {
+    setMovies([]);
     setSelectedGenre([...selectedGenre, genreData]);
   };
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    setMovies([]);
     setSearchText(event.target.value);
   };
 
@@ -21,7 +23,11 @@ function App() {
     <div className="App">
       <HeaderWrapper>
         <Header handleGenre={handleGenre} genre={genre} setGenre={setGenre} />
-        <SearchInput value={searchText} onChange={(e) => handleSearch(e)} />
+        <SearchInput
+          placeholder="Search Movie"
+          value={searchText}
+          onChange={(e) => handleSearch(e)}
+        />
       </HeaderWrapper>
       <MovieSection
         searchText={searchText}
