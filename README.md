@@ -10,6 +10,9 @@ Search Functionality with Debounce: Develop search bar with debounce to enhance 
 Infinite Scrolling from Year 2012: Implementd infinite scrolling for movies, loading dynamically as users scroll down, starting from the year 2012.
 Could not complete infinite scrolling when when user wants to see previous year movies
 
+Typescript usage:
+I have tried to use TypeScript to a certain extent, since I am familiar with it.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
