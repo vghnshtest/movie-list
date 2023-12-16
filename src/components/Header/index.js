@@ -1,13 +1,19 @@
-import React, { useEffect } from "react";
-import styled from "styled-components";
+import { useEffect } from "react";
 import MovieListLogo from "../../../src/assets/ic_movie_list_logo.png";
 import Button from "../Button";
+import { GenreWrapper, HeaderWrapper } from "./style";
 
-const Header = ({ handleGenre, genre, setGenre }) => {
+const Header = ({
+  selectedGenre,
+  setSelectedGenre,
+  handleGenre,
+  genre,
+  setGenre,
+}) => {
   const getGenre = async () => {
-    const apiKey = "2dca580c2a14b55200e784d157207b4d";
+    const apiKey = process.env.REACT_APP_IMDB_API_KEY;
     const response = await fetch(
-      `https://api.themoviedb.org/3/genre/movie/list?api_key=${apiKey}`
+      `${process.env.REACT_APP_BASE_URL}/genre/movie/list?api_key=${apiKey}`
     );
     const data = await response.json();
     setGenre(data?.genres);
@@ -19,31 +25,9 @@ const Header = ({ handleGenre, genre, setGenre }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const HeaderWrapper = styled.header`
-    padding: 1rem 2rem;
-    @media (max-width: 768px) {
-      padding: 1rem;
-    }
-    .movie-list-logo {
-      height: 2.5rem;
-      margin-right: auto;
-      display: flex;
-      margin-bottom: 1rem;
-    }
-  `;
-
-  const GenreWrapper = styled.section`
-    display: flex;
-    // justifyContent: center;
-    gap: 0.8rem;
-    paddingbottom: 0.5rem;
-    overflow-y: auto;
-
-    &::-webkit-scrollbar {
-      width: 0.2rem;
-    }
-  `;
-
+  function isIdPresent(array, targetId) {
+    return array.some((item) => item.id === targetId);
+  }
   return (
     <HeaderWrapper className="">
       <img
@@ -52,13 +36,22 @@ const Header = ({ handleGenre, genre, setGenre }) => {
         alt="movie-list-logo"
       />
       <GenreWrapper>
-        <Button isActive onClick={() => handleGenre("")}>
+        <Button
+          isActive
+          onClick={() => {
+            setSelectedGenre([]);
+            window.scrollTo(0, 0);
+          }}
+        >
           All
         </Button>
 
         {genre?.map((item) => {
           return (
-            <Button isActive={false} onClick={() => handleGenre(item)}>
+            <Button
+              isActive={isIdPresent(selectedGenre, item.id)}
+              onClick={() => handleGenre(item)}
+            >
               {item.name}
             </Button>
           );

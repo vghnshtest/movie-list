@@ -35,16 +35,6 @@ const CloseButton = styled.span`
   z-index: 1002;
 `;
 
-// Sample movie data (replace this with actual data)
-const movieData = {
-  title: "Movie Title",
-  posterPath: "path/to/poster.jpg",
-  genre: "Action",
-  cast: "Actor 1, Actress 1",
-  director: "Director Name",
-  description: "A brief summary of the movie.",
-};
-
 const MovieDetailsDialog = ({ data, isOpen, onClose }) => {
   return (
     <MovieDialogOverlay isOpen={isOpen}>

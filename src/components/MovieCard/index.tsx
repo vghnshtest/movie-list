@@ -64,13 +64,11 @@ const MovieCardWrapper = styled.div<{ posterPath?: string }>`
 `;
 
 const MovieCard: React.FC<MovieCardProps> = ({ movie }) => {
-  console.log(movie);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const openDialog = () => {
     setIsDialogOpen(true);
   };
   const closeDialog = () => {
-    console.log("cloe");
     setIsDialogOpen(false);
   };
   return (

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { throttle } from "lodash";
@@ -32,47 +33,59 @@ const MovieSectionWrap = styled.section`
 
 const MovieSection = ({ searchText, selectedGenre, movies, setMovies }) => {
   const [currentYear, setCurrentYear] = useState(2012);
-
+  const [loading, setLoading] = useState(false);
   const genreString = selectedGenre.map((genre) => genre.id).join(",");
+  const apiKey = process.env.REACT_APP_IMDB_API_KEY;
+
+  const fetchMovies = async ({
+    searchText,
+    currentYear,
+    genreString,
+    onSucess,
+  }) => {
+    if (currentYear === 2012) {
+      setLoading(true);
+    }
+    const response = await fetch(
+      searchText
+        ? `${process.env.REACT_APP_BASE_URL}/search/movie?api_key=${apiKey}&query=${searchText}&year=${currentYear}&with_genres=${genreString}`
+        : `${process.env.REACT_APP_BASE_URL}/discover/movie?api_key=${apiKey}&query=${searchText}&year=${currentYear}&with_genres=${genreString}`
+    );
+    const data = await response.json();
+    onSucess(data.results);
+    setLoading(false);
+  };
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      const apiKey = "2dca580c2a14b55200e784d157207b4d";
-      const response = await fetch(
-        searchText
-          ? `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${searchText}&year=${currentYear}&with_genres=${genreString}`
-          : `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&query=${searchText}&year=${currentYear}&with_genres=${genreString}`
-      );
-      const data = await response.json();
-      const updatedMovies = [...data.results];
+    const onSucess = (updatedMovies) => {
       setMovies((prevMovies) => [
         ...prevMovies,
         { year: currentYear, movies: updatedMovies },
       ]);
     };
-
-    fetchMovies();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    fetchMovies({
+      searchText,
+      currentYear,
+      genreString,
+      onSucess: (d) => onSucess(d),
+    });
   }, [currentYear]);
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      const apiKey = "2dca580c2a14b55200e784d157207b4d";
-      const response = await fetch(
-        searchText
-          ? `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${searchText}&year=${currentYear}&with_genres=${genreString}`
-          : `https://api.themoviedb.org/3/discover/movie?api_key=${apiKey}&query=${searchText}&year=${currentYear}&with_genres=${genreString}`
-      );
-      const data = await response.json();
-      setMovies(() => [{ year: currentYear, movies: data.results }]);
+    const onSucess = (data) => {
+      setMovies(() => [{ year: 2012, movies: data }]);
     };
-
-    fetchMovies();
+    fetchMovies({
+      searchText,
+      currentYear,
+      genreString,
+      onSucess: (d) => onSucess(d),
+    });
   }, [selectedGenre, searchText]);
 
   const handleScroll = throttle(() => {
     const doc = window.document.documentElement;
-    if (doc.scrollTop + doc.clientHeight + 200 >= doc.scrollHeight) {
+    if (doc.scrollTop + doc.clientHeight + 400 >= doc.scrollHeight) {
       setCurrentYear((prevYear) => prevYear + 1);
     }
   }, 500);
@@ -84,8 +97,16 @@ const MovieSection = ({ searchText, selectedGenre, movies, setMovies }) => {
     };
   }, []);
 
+  if (loading) {
+    return (
+      <div style={{ backgroundColor: theme.black }}>
+        <h2 style={{ color: theme.white }}>Loading...</h2>;
+      </div>
+    );
+  }
+
   return (
-    <>
+    <div style={{ backgroundColor: theme.black }}>
       {movies.map((data) => (
         <MovieSectionWrap>
           <span className="year">{data.year}</span>
@@ -94,7 +115,7 @@ const MovieSection = ({ searchText, selectedGenre, movies, setMovies }) => {
           ))}
         </MovieSectionWrap>
       ))}
-    </>
+    </div>
   );
 };
 
