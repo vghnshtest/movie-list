@@ -12,9 +12,8 @@ const MovieSectionWrap = styled.section`
   justify-content: center;
 `;
 
-const MovieSection = ({ selectedGenre, movies, setMovies }) => {
+const MovieSection = ({ searchText, selectedGenre, movies, setMovies }) => {
   const [currentYear, setCurrentYear] = useState(2012);
-  const [searchText, setSearchText] = useState("");
 
   const genreString = selectedGenre.map((genre) => genre.id).join(",");
 
@@ -34,6 +33,7 @@ const MovieSection = ({ selectedGenre, movies, setMovies }) => {
     };
 
     fetchMovies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentYear]);
 
   useEffect(() => {
@@ -51,6 +51,7 @@ const MovieSection = ({ selectedGenre, movies, setMovies }) => {
     };
 
     fetchMovies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedGenre, searchText]);
   console.log(currentYear);
 
@@ -69,13 +70,9 @@ const MovieSection = ({ selectedGenre, movies, setMovies }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleSearch = (event) => {
-    setSearchText(event.target.value);
-  };
-
   return (
     <MovieSectionWrap>
-      <input onChange={handleSearch} />
+      {/* <input onChange={handleSearch} /> */}
       <span style={{ color: "white" }}>{currentYear}</span>{" "}
       {movies.map((movie) => (
         <MovieCard />
